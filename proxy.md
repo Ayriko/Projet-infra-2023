@@ -106,13 +106,12 @@ sudo firewall-cmd --remove-service dhcpv6-client
 puis dans la zone internal on va ajouter le port 30000 ainsi que l'ip du proxy en source
 comme ça seulement le proxy pourra atteindre le serveur :
 ```bash
-sudo firewall-cmd --zone=internal --remove-service=cockpit
-sudo firewall-cmd --zone=internal --remove-service=dhcpv6-client
-sudo firewall-cmd --zone=internal --remove-service=mdns
-sudo firewall-cmd --zone=internal --remove-service=samba-client
-sudo firewall-cmd --zone=internal --remove-service=ssh
-sudo firewall-cmd --zone=internal --add-source=10.102.20.11
-sudo firewall-cmd --zone=internal --add-port=30000/tcp
+sudo firewall-cmd --new-zone=proxy --permanent
+sudo firewall-cmd --reload
+sudo firewall-cmd --zone=proxy --add-port=30000/tcp
+sudo firewall-cmd --zone=proxy --add-source=10.102.20.11
 sudo firewall-cmd --runtime-to-permanent
 sudo firewall-cmd --reload
 ```
+
+node foundryvtt/resources/app/main.js --dataPath=$HOME/foundrydata
