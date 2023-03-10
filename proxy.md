@@ -113,7 +113,6 @@ sudo firewall-cmd --zone=internal --remove-service=samba-client
 sudo firewall-cmd --zone=internal --remove-service=ssh
 sudo firewall-cmd --zone=internal --add-source=10.102.20.11
 sudo firewall-cmd --zone=internal --add-port=30000/tcp
+sudo firewall-cmd --runtime-to-permanent
 sudo firewall-cmd --reload
 ```
-
-
