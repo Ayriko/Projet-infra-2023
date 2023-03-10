@@ -91,12 +91,12 @@ sur la machine du proxy :
 sudo firewall-cmd --add-port=80/tcp --permanent
 ```
 
-redemarrer nginx ainsi que le serveur
-sur internet allé sur ce lien : http://10.102.20.11
-si vous voyez la page d'accueil c'est que le proxy fonctionne
-Maintenant il faut que l'ip du serveur ne soit plus joignable
-pour cela sur la machine du serveur on va utiliser une zone de notre firewall
-la premiere chose à faire est de tout supprimer sur notre zone par default à part le ssh:
+redemarrer nginx ainsi que le serveur  
+sur internet allé sur ce lien : http://10.102.20.11  
+si vous voyez la page d'accueil c'est que le proxy fonctionne  
+Maintenant il faut que l'ip du serveur ne soit plus joignable  
+pour cela sur la machine du serveur on va utiliser une zone de notre firewall  
+la premiere chose à faire est de tout supprimer sur notre zone par default à part le ssh:  
 ```bash
 sudo firewall-cmd --remove-port=30000/tcp --permanent
 sudo firewall-cmd --remove-service cockpit
