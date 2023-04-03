@@ -123,6 +123,6 @@ Si on souhaite voir les logs de ses services en cas de problème :
 sudo journalctl -xe -u pm2-<USER>.service
 ```
 
-## 3/ Mise en plade du proxy
+## 3/ Mise en place du proxy
 
 voir proxy.md
