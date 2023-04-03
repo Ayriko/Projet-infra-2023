@@ -1,0 +1,96 @@
+---
+- name: Config Bastion
+  hosts: bastion
+  roles:
+    - firewall_default_conf
+  vars:
+    authorized_IP:   # Used in the firewall_default_conf role
+      - "{{ IP_ansible_host }}"
+      - "{{ IP_routeur }}"
+      - 10.102.20.200
+  vars_prompt:  # Ask for 2 passwords to use in users creation
+    - name: user_jump_password
+      prompt: Password of the jumper user
+    - name: user_bastion_password
+      prompt: Password of the user allowed in bastion
+  tasks:
+    - name: create user_jumper
+      ansible.builtin.user:
+        name: "{{ Bastion_user_jump }}"
+        state: present
+        password: "{{ user_jump_password | password_hash('sha512') }}"
+      become: true
+    - name: create the user allowed in the bastion
+      ansible.builtin.user:
+        name: "{{ Bastion_user }}"
+        state: present
+        password: "{{ user_bastion_password | password_hash('sha512') }}"
+      become: true
+
+    - name: copy ssh_bastion.conf into ssh conf of target
+      template:
+        src: ~/ansible/templates/bastion.conf
+        dest: /etc/ssh/sshd_config
+      become: true
+    - name: restart sshd service
+      ansible.builtin.systemd:
+        name: sshd
+        state: reloaded
+      become: true
+
+- name: Config Reverse-proxy
+  hosts: reverseproxy
+  vars:
+    authorized_IP:    # Used in the firewall_default_conf role script
+      - "{{ IP_ansible_host }}"
+      - "{{ IP_routeur }}"
+      - "{{ IP_bastion }}"
+      - 10.102.20.200  # IP machine physique
+  roles:
+    - firewall_default_conf
+  tasks:
+    - name: install nginx
+      ansible.builtin.dnf:
+        name: nginx
+        state: latest
+      become: true
+
+    - name: execute commands to create every directory for ssl certificates
+      command: mkdir -p /etc/pki/nginx/private
+      become: true
+    - name: get stat about a potential certificate.crt
+      stat:
+        path: /etc/pki/nginx/certificate.crt
+      register: cert_ssl
+    - name: create ssl certificate and private key if certificate not already exist
+      become: true
+      command: >
+        openssl req -x509 -sha256 -nodes -days 365 -newkey rsa:2048
+        -keyout /etc/pki/nginx/private/privateKey.key
+        -out /etc/pki/nginx/certificate.crt
+        -subj "/C=FR/ST=Gironde/L=Bordeaux/O=none/OU=none/CN=anonyme/emailAddress=coucou"
+      when: not cert_ssl.stat.exists
+
+    - name: copy proxy.conf into nginx conf of target
+      template:
+        src: ~/ansible/templates/proxy.conf
+        dest: /etc/nginx/conf.d/
+      become: true
+    - name: start nginx
+      service:
+        name: nginx
+        state: restarted
+        enabled: true
+      become: true
+    - name: open port 443
+      ansible.posix.firewalld:
+        zone: allowed
+        port: 443/tcp
+        state: enabled
+        permanent: true
+      become: true
+    - name: reload firewalld
+      ansible.builtin.systemd:
+        name: firewalld
+        state: reloaded
+      become: true

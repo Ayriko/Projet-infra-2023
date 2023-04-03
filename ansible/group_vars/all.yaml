@@ -1,0 +1,12 @@
+# IP of your Infra
+
+IP_reverse_proxy: 10.102.20.11
+IP_app: 10.102.20.12
+app_listen_port: 30000
+IP_bastion: 10.102.20.150
+IP_routeur: 10.102.20.254
+IP_ansible_host: 10.102.20.50
+
+# Bastion config
+Bastion_user_jump: bastionuser
+Bastion_user: michel

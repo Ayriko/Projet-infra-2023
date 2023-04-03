@@ -85,6 +85,11 @@ sudo firewall-cmd --add-port=80/tcp --permanent
 ```
 
 Redémarrer nginx ainsi que le serveur.
+
+```bash
+sudo systemctl start nginx
+```
+
 Sur internet aller sur ce lien : `http://10.102.20.11`.
 Si vous voyez la page d'accueil c'est que le proxy fonctionne.  
 
@@ -98,9 +103,8 @@ sudo firewall-cmd --remove-service cockpit
 sudo firewall-cmd --remove-service dhcpv6-client
 ```
 
-Puis dans la zone internal on va ajouter le port 30000 ainsi que l'ip du proxy en source
-
-Comme ça seulement le proxy pourra atteindre le serveur :
+On va ensuite créer une nouvelle zone et lui ajouter une ip et le port  
+pour faire en sorte que seulement le proxy puisse atteindre le serveur
 
 ```bash
 sudo firewall-cmd --new-zone=proxy --permanent

@@ -1,0 +1,70 @@
+---
+# This is the default firewalld config for all targets
+
+- name: Create new zone for allowed IPs
+  ansible.posix.firewalld:
+    zone: allowed
+    state: present
+    permanent: true
+  become: true
+
+- name: Add IPs in the new zone
+  ansible.posix.firewalld:
+    zone: allowed
+    source: "{{ item }}"
+    state: enabled
+    permanent: true
+  become: true
+  loop: "{{ authorized_IP }}"
+
+- name: Set public zone to DROP
+  ansible.posix.firewalld:
+    zone: public
+    target: DROP
+    state: present
+    permanent: true
+  become: true
+
+- name: Get all services enabled from the public zone
+  command: firewall-cmd --zone=public --list-services
+  register: public_services
+  become: true
+
+- name: remove all services from public zone if there is service to remove
+  ansible.posix.firewalld:
+    zone: public
+    service: "{{ item }}"
+    state: disabled
+    permanent: true
+  become: true
+  loop: "{{ public_services.stdout_lines[0].split() }}"
+  when: public_services.stdout | length > 0
+
+- name: Get all ports enabled from the public zone
+  command: firewall-cmd --zone=public --list-ports
+  register: public_ports
+  become: true
+
+- name: remove all ports from public zone if there is port to remove
+  ansible.posix.firewalld:
+    zone: public
+    port: "{{ item }}"
+    state: disabled
+    permanent: true
+  become: true
+  loop: "{{ public_ports.stdout_lines[0].split() }}"
+  when: public_ports.stdout | length > 0
+
+- name: Add ssh service to the zone allowed
+  ansible.posix.firewalld:
+    zone: allowed
+    service: ssh
+    state: enabled
+    permanent: true
+  become: true
+
+- name: reload firewalld to apply changes
+  ansible.builtin.systemd:
+    name: firewalld
+    state: reloaded
+  become: true

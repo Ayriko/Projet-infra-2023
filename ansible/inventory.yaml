@@ -1,0 +1,17 @@
+[reverseproxy]
+10.102.20.11
+
+[bastion]
+10.102.20.150
+
+[appserver]
+10.102.20.12
+
+[reverseproxy:vars]
+ansible_ssh_user=user
+
+[bastion:vars]
+ansible_ssh_user=user
+
+[appserver:vars]
+ansible_ssh_user=user
