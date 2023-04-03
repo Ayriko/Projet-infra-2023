@@ -1,0 +1,28 @@
+# Define Server
+server {
+
+    # Enter your fully qualified domain name or leave blank
+    server_name             {{ IP_reverse_proxy }};
+
+    # Listen on port 80 without SSL certificates
+    listen                  80;
+
+    # Sets the Max Upload size to 300 MB
+    client_max_body_size 300M;
+
+    # Proxy Requests to Foundry VTT
+    location / {
+
+        # Set proxy headers
+        proxy_set_header Host $host;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+
+        # These are important to support WebSockets
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection "Upgrade";
+
+        # Make sure to set your Foundry VTT port number
+        proxy_pass http://{{ IP_app }}:{{ app_listen_port }};
+    }
+}
