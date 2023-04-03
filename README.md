@@ -21,6 +21,8 @@ sudo vim /etc/selinux/config
 # remplacer "enforcing" par "permissive" sur la ligne non commentée
 ```
 
+Faire le nfs avant ces étapes ?
+
 ## 1/ Installation de FoundryVTT
 
 Sur la machine qui servira de serveur, on va créer deux dossiers et se mettre dans l'un d'eux :
