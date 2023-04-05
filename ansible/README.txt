@@ -1,6 +1,9 @@
-Executer le playbook.yaml:
+Executer le playbook pour la première fois :
 
-ansible-playbook -i inventory.yaml playbook.yaml -e "ansible_sudo_pass=root"
+ansible-playbook -i inventories/foundry_infra/hosts.ini playbooks/foundry_playbook.yaml -e "ansible_sudo_pass=root"
+
+
+ansible-playbook -i inventories/foundry_infra/hosts.ini playbooks/foundry_playbook.yaml -e "ansible_sudo_pass=root" --skip-tags "copy_foundry"
 
 
 -i inventory.yaml: indique le fichier qu'on va utiliser comme inventaire

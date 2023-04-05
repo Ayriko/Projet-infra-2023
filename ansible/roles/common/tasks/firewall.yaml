@@ -68,3 +68,14 @@
     permanent: true
   become: true
   notify: Reload firewall
+
+- name: Disable SELinux permanently in the configuration file
+  ansible.builtin.lineinfile:
+    path: /etc/selinux/config
+    regexp: '^SELINUX='
+    line: 'SELINUX=disabled'
+  become: true
+
+- name: Set SELinux to permissive mode without reboot
+  ansible.builtin.command: setenforce 0
+  become: true

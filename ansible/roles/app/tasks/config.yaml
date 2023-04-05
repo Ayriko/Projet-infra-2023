@@ -1,19 +1,62 @@
 - name: copy foundryvtt dir
   copy:
-    src: foundryvtt/
-    dest: /home/aymerico/foundryvtt/
+    src: foundryvtt.tar.gz
+    dest: /tmp/ # /home/aymerico/foundryvtt/
+  tags:
+    - copy_foundry
 
 - name: copy foundrydata dir
   copy:
-    src: foundrydata/
-    dest: /home/aymerico/nfs/foundrydata/
+    src: foundrydata.tar.gz
+    dest: /tmp/ # /home/aymerico/nfs/foundrydata/
+  tags:
+    - copy_foundry
+
+- name: copy foudry.config.json
+  copy:
+    src: foundry.config.js
+    dest: /home/aymerico
+  tags:
+    - copy_foundry
+
+- name: copy file for launch with PM2
+  copy:
+    src: foundry.config.js
+    dest: /home/aymerico/
+  tags:
+    - copy_foundry
+
+- name: Extract foundrydata
+  ansible.builtin.unarchive:
+    src: /tmp/foundrydata.tar.gz
+    dest: /home/aymerico/nfs/
+    remote_src: yes
+  tags:
+    - copy_foundry
+
+- name: Extract foundryvtt
+  ansible.builtin.unarchive:
+    src: /tmp/foundryvtt.tar.gz
+    dest: /home/aymerico/
+    remote_src: yes
+  tags:
+    - copy_foundry
 
 - name: Check if the app is already running
-  ansible.builtin.shell: "pm2 list | grep foundry.config.js"
+  ansible.builtin.shell: "pm2 list | grep foundry"
   register: pm2_check_result
   failed_when: false
   changed_when: false
 
-- name: Start the app with PM2 if not already running
-  ansible.builtin.shell: "pm2 start foundry.config.js"
+- name: startup PM2
+  ansible.builtin.shell: "pm2 startup"
+  failed_when: false
+  when: pm2_check_result.stdout_lines == []
+
+- name: Start the app with PM2
+  ansible.builtin.shell: "pm2 start /home/aymerico/foundry.config.js"
+  when: pm2_check_result.stdout_lines == []
+
+- name: save PM2
+  ansible.builtin.shell: "pm2 save"
   when: pm2_check_result.stdout_lines == []

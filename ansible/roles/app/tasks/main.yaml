@@ -6,3 +6,6 @@
 
 - name: Install and configure app
   import_tasks: config.yaml
+
+- name: Custom firewalld (open port)
+  import_tasks: openport.yaml

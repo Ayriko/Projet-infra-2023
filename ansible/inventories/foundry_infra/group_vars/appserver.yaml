@@ -8,3 +8,4 @@ common_packages:
   - vi
   - nfs-utils
   - openssl-devel
+  - tar

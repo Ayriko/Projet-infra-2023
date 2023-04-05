@@ -2,8 +2,10 @@
   ansible.builtin.systemd:
     name: firewalld
     state: reloaded
+  become: true
 
 - name: Reload nginx
   ansible.builtin.systemd:
     name: nginx
     state: reloaded
+  become: true
