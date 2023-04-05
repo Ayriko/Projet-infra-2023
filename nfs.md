@@ -57,3 +57,76 @@ sudo vim foundry.config.js
 
 Refaire le pm2 startup est nécessaire pour que ce soit pris en compte.
 Voir dans readme.md
+
+## Machine hôte - ajout d'un système de backup
+
+On installe tar si besoin :
+
+```bash
+sudo dnf install tar -y
+```
+
+On met en place nos dossiers :
+
+```bash
+mkdir scripts
+mkdir backups
+```
+
+On écrit ensuite notre script de backup :
+
+```bash
+sudo vim scripts/data_backup.sh
+-> 
+#!/bin/bash
+# Aymeric MOISKA
+# Permet de réaliser une backup du data de Foundry présent dans le dossier partagé en nfs à intervalle régulier
+
+DATE=`date +"%Y%m%d%H%M"`
+backupfile=foundrydata_backup_${DATE}
+
+tar -cf backups/${backupfile}.tar.gz /exports/foundrydata/
+echo "Le dossier Foundrydata a été compressé en ${backupfile}.gz"
+```
+
+On va ensuite mettre en place un service et un timer pour que le script soit éxécuté à une heure journalière donnée.
+
+```bash
+sudo vim /etc/systemd/system/data_backup.service
+->
+[Unit]
+Description=Service pour éxécuter le backup de foundrydata
+
+[Service]
+ExecStart=/bin/bash ./scripts/data_backup.sh
+Type=oneshot
+
+[Install]
+WantedBy=multi-user.target
+```
+
+```bash
+sudo vim /etc/systemd/system/data_backup.timer
+->
+[Unit]
+Description=Run data_backup de foundry regulièrement
+
+[Timer]
+OnCalendar=*-*-* 12:00:00
+#tout les jours à 12am
+Persistent=true
+
+[Install]
+WantedBy=timers.target
+
+sudo systemctl start data_backup.timer
+sudo systemctl enable data_backup.timer
+```
+
+On peut vérifier son activation avec :
+
+```bash
+sudo systemctl status data_backup.timer
+ou
+sudo systemctl list-timers
+```
