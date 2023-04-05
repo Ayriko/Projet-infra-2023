@@ -1,0 +1,10 @@
+- name: Install PM2
+  npm:
+    global: yes
+    name: pm2
+  become: true
+#- name: Install PM2
+#  ansible.builtin.command:
+#    cmd: npm install -g pm2
+#  args:
+#    warn: false

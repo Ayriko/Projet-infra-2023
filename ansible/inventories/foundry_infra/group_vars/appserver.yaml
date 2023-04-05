@@ -1,0 +1,10 @@
+authorized_IP:
+  - "{{ IP_ansible_host }}"
+  - "{{ IP_reverse_proxy }}"
+  - "{{ IP_bastion }}"
+
+common_packages:
+  - openssh-server
+  - vi
+  - nfs-utils
+  - openssl-devel

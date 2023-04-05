@@ -1,0 +1,10 @@
+[Unit]
+Description=Run data_backup de foundry regulièrement
+
+[Timer]
+OnCalendar={{ Calendar }}
+#tout les jours à 11h20
+Persistent=true
+
+[Install]
+WantedBy=timers.target

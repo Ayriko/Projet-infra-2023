@@ -1,0 +1,19 @@
+- name: copy foundryvtt dir
+  copy:
+    src: foundryvtt/
+    dest: /home/aymerico/foundryvtt/
+
+- name: copy foundrydata dir
+  copy:
+    src: foundrydata/
+    dest: /home/aymerico/nfs/foundrydata/
+
+- name: Check if the app is already running
+  ansible.builtin.shell: "pm2 list | grep foundry.config.js"
+  register: pm2_check_result
+  failed_when: false
+  changed_when: false
+
+- name: Start the app with PM2 if not already running
+  ansible.builtin.shell: "pm2 start foundry.config.js"
+  when: pm2_check_result.stdout_lines == []

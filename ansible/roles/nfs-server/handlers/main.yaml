@@ -1,0 +1,19 @@
+- name: Restart nfs server
+  ansible.builtin.systemd:
+    name: nfs-server
+    state: restarted
+    enable: true
+  become: true
+
+- name: Restart firewall
+  ansible.builtin.systemd:
+    name: firewalld
+    state: restarted
+  become: true
+
+- name: Start data_backup.timer
+  ansible.builtin.systemd:
+    name: data_backup.timer
+    state: started
+    enabled: true
+  become: true

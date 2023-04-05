@@ -1,0 +1,9 @@
+- name: Reload firewall
+  ansible.builtin.systemd:
+    name: firewalld
+    state: reloaded
+
+- name: Reload nginx
+  ansible.builtin.systemd:
+    name: nginx
+    state: reloaded

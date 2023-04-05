@@ -1,0 +1,15 @@
+- name: create directorys
+  file:
+    path: /exports/foundrydata/
+    state: directory
+    owner: nobody
+    group: nobody
+    # mode: 0755
+  become: true
+
+- name: Configure NFS exports
+  template:
+    src: nfs_exports
+    dest: /etc/exports
+  become: true
+  notify: Restart nfs server

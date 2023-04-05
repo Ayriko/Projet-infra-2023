@@ -1,0 +1,24 @@
+- name: execute commands to create every directory for ssl certificates
+  file:
+    path: /etc/pki/nginx/private/
+    state: directory
+    owner: root
+    group: root
+    mode: 0755
+  #  recurse: yes
+  # command: mkdir -p /etc/pki/nginx/private
+  become: true
+
+- name: get stat about a potential certificate.crt
+  stat:
+      path: /etc/pki/nginx/certificate.crt
+  register: cert_ssl
+
+- name: create ssl certificate and private key if certificate not already exist
+  become: true
+  command: >
+    openssl req -x509 -sha256 -nodes -days 365 -newkey rsa:2048
+    -keyout /etc/pki/nginx/private/privateKey.key
+    -out /etc/pki/nginx/certificate.crt
+    -subj "/C={{ country }}/ST={{ state }}/L={{ city }}/O={{ entreprise }}/OU={{ OU }}/CN={{ CN }}/emailAddress={{ email }}"
+  when: not cert_ssl.stat.exists

@@ -1,0 +1,8 @@
+- name: Install nodejs
+  import_tasks: node.yaml
+
+- name: Install PM2
+  import_tasks: pm2.yaml
+
+- name: Install and configure app
+  import_tasks: config.yaml

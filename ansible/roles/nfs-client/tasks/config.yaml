@@ -1,0 +1,13 @@
+- name: create mount directory
+  file:
+    path: /home/aymerico/nfs/foundrydata
+    state: directory
+
+- name: Mount NFS share
+  ansible.builtin.mount:
+    path: /home/aymerico/nfs/foundrydata
+    src: "{{ IP_nfs_server }}:/exports/foundrydata"
+    fstype: nfs
+    state: mounted
+    opts: rw
+  become: true

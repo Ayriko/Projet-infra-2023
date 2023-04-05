@@ -1,0 +1,4 @@
+- name: Install NGINX
+  import_tasks: install.yaml
+- name: Configure NGINX reverse proxy
+  import_tasks: config.yaml

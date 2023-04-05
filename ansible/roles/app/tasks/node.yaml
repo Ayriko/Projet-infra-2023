@@ -1,0 +1,20 @@
+- name: Download NodeSource setup script for Node.js v14.x
+  ansible.builtin.get_url:
+    url: https://rpm.nodesource.com/setup_14.x
+    dest: /tmp/setup_14.x
+    mode: '0755'
+
+- name: Run NodeSource setup script for Node.js v14.x
+  ansible.builtin.command: bash /tmp/setup_14.x
+  become: true
+
+- name: Remove NodeSource setup script
+  ansible.builtin.file:
+    path: /tmp/setup_14.x
+    state: absent
+
+- name: Install nodejs
+  ansible.builtin.package:
+    name: nodejs
+    state: present
+  become: true

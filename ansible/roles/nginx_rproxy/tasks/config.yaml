@@ -1,0 +1,20 @@
+- name: copy proxy.conf into nginx conf of target
+  template:
+    src: proxy.conf
+    dest: /etc/nginx/conf.d/
+  become: true
+  notify: Reload nginx
+- name: start nginx
+  service:
+    name: nginx
+    state: started
+    enabled: true
+  become: true
+- name: open port 443
+  ansible.posix.firewalld:
+    zone: allowed
+    port: 443/tcp
+    state: enabled
+    permanent: true
+  become: true
+  notify: Reload firewall

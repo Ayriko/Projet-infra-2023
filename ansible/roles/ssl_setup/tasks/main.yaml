@@ -1,0 +1,2 @@
+- name: Create ssl certificates if not exist
+  import_tasks: ssl.yaml

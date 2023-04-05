@@ -1,0 +1,5 @@
+- name: Common conf firewalld
+  import_tasks: firewall.yaml
+
+- name: Install common package
+  import_tasks: packages.yaml

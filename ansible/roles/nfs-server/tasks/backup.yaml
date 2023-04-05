@@ -1,0 +1,30 @@
+- name: make dir for the backup script
+  ansible.builtin.file:
+    path: "{{ Path_to_scripts }}" # /home/user/scripts/
+    state: directory
+  become: "{{ Scripts_path_need_root }}"
+
+- name: make dir for backups
+  ansible.builtin.file:
+    path: "{{ Path_to_backups }}" # /home/user/backups
+    state: directory
+  become: "{{ Backups_path_need_root }}"
+
+- name: copy script
+  ansible.builtin.template:
+    src: data_backup.sh
+    dest: "{{ Path_to_scripts }}"# /home/user/scripts
+
+- name: copy service
+  ansible.builtin.template:
+    src: data_backup.service
+    dest: /etc/systemd/system/
+  become: true
+  notify: Start data_backup.timer
+
+- name: copy timer
+  ansible.builtin.template:
+    src: data_backup.timer
+    dest: /etc/systemd/system/data_backup.timer
+  become: true
+  notify: Start data_backup.timer

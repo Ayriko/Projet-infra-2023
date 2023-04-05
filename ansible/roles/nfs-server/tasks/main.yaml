@@ -1,0 +1,11 @@
+- name: setup directory and files
+  import_tasks: config.yaml
+
+- name: launch nfs
+  import_tasks: launch.yaml
+
+- name: configure backup for nfs files
+  import_tasks: backup.yaml
+
+- name: configure firewall
+  import_tasks: firewall.yaml

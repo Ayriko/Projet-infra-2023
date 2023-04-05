@@ -1,0 +1,1 @@
+/exports/foundrydata    {{ IP_app_server }}(rw,sync,no_subtree_check,no_root_squash,all_squash,anonuid=65534,anongid=65534)

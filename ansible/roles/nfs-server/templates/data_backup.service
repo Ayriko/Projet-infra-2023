@@ -1,0 +1,9 @@
+[Unit]
+Description=Service pour éxécuter le backup de foundrydata
+
+[Service]
+ExecStart=/bin/bash .{{ Path_to_scripts }}data_backup.sh
+Type=oneshot
+
+[Install]
+WantedBy=multi-user.target

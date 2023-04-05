@@ -1,0 +1,9 @@
+# Bastion config
+
+# à modifer concernant la fonction du bastion (on veut plusieurs users, et mettre ajouter des clefs authoriser
+Bastion_user_jump: bastionuser
+Bastion_user: michel
+
+authorized_IP:
+  - "{{ IP_ansible_host }}"
+  - "{{ IP_router }}"

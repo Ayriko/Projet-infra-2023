@@ -1,0 +1,54 @@
+---
+- name: Config NFS_server
+  hosts: nfsserver
+  roles:
+    - common
+    - nfs-server
+
+- name: Config App server
+  hosts: appserver
+  roles:
+    - common
+    - nfs-client
+    - app
+
+- name: Config Reverse_proxy
+  hosts: reverseproxy
+  roles:
+    - common
+    - ssl_setup
+    - nginx_rproxy
+
+- name: Config Bastion
+  hosts: bastion
+  roles:
+    - common
+  vars_prompt:  # Ask for 2 passwords to use in users creation
+    - name: user_jump_password
+      prompt: Password of the jumper user
+    - name: user_bastion_password
+      prompt: Password of the user allowed in bastion
+  tasks:
+    - name: create user_jumper
+      ansible.builtin.user:
+        name: "{{ Bastion_user_jump }}"
+        state: present
+        password: "{{ user_jump_password | password_hash('sha512') }}"
+      become: true
+    - name: create the user allowed in the bastion
+      ansible.builtin.user:
+        name: "{{ Bastion_user }}"
+        state: present
+        password: "{{ user_bastion_password | password_hash('sha512') }}"
+      become: true
+
+    - name: copy ssh_bastion.conf into ssh conf of target
+      template:
+        src: ~/ansible/templates/bastion.conf
+        dest: /etc/ssh/sshd_config
+      become: true
+    - name: restart sshd service
+      ansible.builtin.systemd:
+        name: sshd
+        state: reloaded
+      become: true

@@ -1,0 +1,5 @@
+- name: Launch nfs-server
+  ansible.builtin.systemd:
+    name: nfs-server
+    state: started
+  become: true
