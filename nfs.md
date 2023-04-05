@@ -85,7 +85,7 @@ sudo vim scripts/data_backup.sh
 DATE=`date +"%Y%m%d%H%M"`
 backupfile=foundrydata_backup_${DATE}
 
-tar -cf backups/${backupfile}.tar.gz /exports/foundrydata/
+tar -cf /home/rocky/backups/${backupfile}.tar.gz /exports/foundrydata/
 echo "Le dossier Foundrydata a été compressé en ${backupfile}.gz"
 ```
 
@@ -98,12 +98,21 @@ sudo vim /etc/systemd/system/data_backup.service
 Description=Service pour éxécuter le backup de foundrydata
 
 [Service]
-ExecStart=/bin/bash ./scripts/data_backup.sh
+ExecStart=/bin/bash ./home/rocky/scripts/data_backup.sh
 Type=oneshot
 
 [Install]
 WantedBy=multi-user.target
 ```
+
+On peut le start pour vérifier son bon fonctionnement :
+
+```bash
+sudo systemctl start data_backup
+sudo systemctl status data_backup
+```
+
+Et on écrit le timer :
 
 ```bash
 sudo vim /etc/systemd/system/data_backup.timer
@@ -112,8 +121,8 @@ sudo vim /etc/systemd/system/data_backup.timer
 Description=Run data_backup de foundry regulièrement
 
 [Timer]
-OnCalendar=*-*-* 12:00:00
-#tout les jours à 12am
+OnCalendar=*-*-* 11:20:00
+#tout les jours à 11h20
 Persistent=true
 
 [Install]
