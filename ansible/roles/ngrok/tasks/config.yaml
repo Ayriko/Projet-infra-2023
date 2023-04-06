@@ -1,0 +1,4 @@
+- name: Configure ngrok with token from env variable
+  ansible.builtin.command:
+    cmd: ngrok config add-authtoken "{{ lookup('env', 'NGROK_AUTHTOKEN') }}"
+  when: not ngrok_stat.stat.exists

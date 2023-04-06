@@ -1,0 +1,5 @@
+- name: Install and extract
+  import_tasks: install.yaml
+
+- name: Configure ngrok
+  import_tasks: config.yaml

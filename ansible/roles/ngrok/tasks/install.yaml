@@ -1,0 +1,26 @@
+- name: Get stat about the potential ngrok command
+  ansible.builtin.stat:
+    path: /usr/local/bin/ngrok
+  register: ngrok_stat
+
+
+- name: Download ngrok archive
+  ansible.builtin.get_url:
+    url: "https://bin.equinox.io/c/bNyj1mQVY4c/ngrok-v3-stable-linux-amd64.tgz"
+    dest: "/tmp/ngrok-v3-stable-linux-amd64.tgz"
+    mode: "0644"
+  when: not ngrok_stat.stat.exists
+
+- name: Extract ngrok archive
+  ansible.builtin.unarchive:
+    src: "/tmp/ngrok-v3-stable-linux-amd64.tgz"
+    dest: "/usr/local/bin"
+    remote_src: yes
+  become: true
+  when: not ngrok_stat.stat.exists
+
+- name: Remove archive in /tmp
+  ansible.builtin.file:
+    path: "/tmp/ngrok-v3-stable-linux-amd64.tgz"
+    state: absent
+  when: not ngrok_stat.stat.exists
