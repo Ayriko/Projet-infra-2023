@@ -1,14 +1,14 @@
 # **Projet-infra-2023**
 
-## **Introduction**
+## **I. Introduction**
 
 Ce projet consiste à proposer un moyen de déployer et d'héberger localement FoundryVTT. Bien qu'il soit accessible en ligne une fois déployé il n'est pas destiné à être hébergé publiquement à destination d'un grand nombre d'utilisateurs. D'où l'absence d'instructions pour joindre le service dès cette introduction. Chaque utilisateur intéressé va pouvoir l'installer de son côté et en profiter personnellement, partageant le lien d'accès pour se connecter avec ses amis.
 
-## **Requirements**
+## **II. Requirements**
 
-### Machines :
+### **A. Machines :**
  - 4 machines RockyLinux (dont les rôles seront : Ansible host, reverse proxy nginx, server nfs, server app)
-### **Pour toutes les machines :**
+### **B. Pour toutes les machines :**
 
 - Désactiver SELINUX
 
@@ -19,7 +19,7 @@ sudo vim /etc/selinux/config
 
 - Le mot de passe des users créés devra être le même pour tous
 
-### **Pour chaque rôle :**
+### **C. Pour chaque rôle :**
  - Ansible host :
    - [Installation](https://docs.ansible.com/ansible/latest/installation_guide/intro_installation.html) de Ansible
    - Cloner le repo
@@ -43,7 +43,7 @@ sudo vim /etc/selinux/config
  - server App :
    - Création d'un user "aymerico", avec les droits sudo
 
-## **Les IPs**
+## **D. Les IPs**
 La configuration de base des IP est la suivante :
 | Machines | IP |
 |----------|:-------------:|
@@ -52,4 +52,5 @@ La configuration de base des IP est la suivante :
 | Foundry | 10.102.20.12 |
 | NFS | 10.102.20.16 |
 
-Pour utiliser d'autres IP, il faut en conséquence modifier le fichier [all.yaml](ansible/inventories/foundry_infra/group_vars/all.yaml) et [hosts.ini](ansible/inventories/foundry_infra/hosts.ini)  
+Pour utiliser d'autres IP, il faut en conséquence modifier les fichier [all.yaml](ansible/inventories/foundry_infra/group_vars/all.yaml) et [hosts.ini](ansible/inventories/foundry_infra/hosts.ini) en remplaçant les IP par défault par les IP voulu.  
+

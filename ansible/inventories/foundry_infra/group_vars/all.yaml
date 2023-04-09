@@ -1,8 +1,6 @@
 # Important IPs
 
 IP_reverse_proxy: 10.102.20.11
-IP_bastion: 10.102.20.150
-IP_router: 10.102.20.254
 IP_ansible_host: 10.102.20.50
 IP_nfs_server: 10.102.20.16
 IP_app_server: 10.102.20.12
