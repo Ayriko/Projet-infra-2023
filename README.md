@@ -6,9 +6,9 @@ Ce projet consiste à proposer un moyen de déployer et d'héberger localement F
 
 ## **II. Requirements**
 
-### **A. Machines :**
+### **1. Machines :**
  - 4 machines RockyLinux (dont les rôles seront : Ansible host, reverse proxy nginx, server nfs, server app)
-### **B. Pour toutes les machines :**
+### **2. Pour toutes les machines :**
 
 - Désactiver SELINUX
 
@@ -19,7 +19,7 @@ sudo vim /etc/selinux/config
 
 - Le mot de passe des users créés devra être le même pour tous
 
-### **C. Pour chaque rôle :**
+### **3. Pour chaque rôle :**
  - Ansible host :
    - [Installation](https://docs.ansible.com/ansible/latest/installation_guide/intro_installation.html) de Ansible
    - Cloner le repo
@@ -43,8 +43,8 @@ sudo vim /etc/selinux/config
  - server App :
    - Création d'un user "aymerico", avec les droits sudo
 
-## **D. Les IPs**
-La configuration de base des IP est la suivante :
+## **4. Les IPs**
+La configuration par défault des IP est la suivante :
 | Machines | IP |
 |----------|:-------------:|
 | Ansible | 10.102.20.50 |
@@ -52,5 +52,27 @@ La configuration de base des IP est la suivante :
 | Foundry | 10.102.20.12 |
 | NFS | 10.102.20.16 |
 
-Pour utiliser d'autres IP, il faut en conséquence modifier les fichier [all.yaml](ansible/inventories/foundry_infra/group_vars/all.yaml) et [hosts.ini](ansible/inventories/foundry_infra/hosts.ini) en remplaçant les IP par défault par les IP voulu.  
+Pour utiliser d'autres IP, il faut modifier les fichier [all.yaml](ansible/inventories/foundry_infra/group_vars/all.yaml) et [hosts.ini](ansible/inventories/foundry_infra/hosts.ini) en remplaçant les IP par défault par les IP voulu.  
 
+### **5. Fichiers de Foundry**
+Posséder les 2 dossier "foundrydata.tar.gz" et "foundryvtt.tar.gz" (fournis en contactant un des auteurs de ce projet) puis les mettres dans le dossier "ansible/roles/app/files", ils seront utilisés pour installer Foundry sur le server App.
+
+## **III. Ansible**
+
+Soit PASSWD = le mot de passe utilisé pour les users créés sur les machines
+### **1. Premier lancement**
+Se mettre dans le répertoire "ansible/"
+```
+cd ansible/
+```
+Executer la commande suivante pour débuter la configuration des machines reverse-proxy, server NFS et App. (En pensant à bien remplacer PASSWD)
+```
+ansible-playbook -i inventories/foundry_infra/hosts.ini playbooks/foundry_playbook.yaml -e "ansible_sudo_pass=PASSWD"
+```
+
+### **2. Pour les prochains lancement**
+Une fois le premier lancement effectué, Foundry est donc installer.  
+On peut executé la commande suivantes pour rejouer le script sans interférer avec le Foundry déjà installer :  
+```
+ansible-playbook -i inventories/foundry_infra/hosts.ini playbooks/foundry_playbook.yaml -e "ansible_sudo_pass=PASSWD" --skip-tags "copy_foundry"
+```
