@@ -1,12 +1,6 @@
 # Projet-infra-2023
 
-## Introduction
-
-Ce projet consiste à proposer un moyen de déployer et d'héberger localement FoundryVTT. Bien qu'il soit accessible en ligne une fois déployé il n'est pas destiné à être hébergé publiquement à destination d'un grand nombre d'utilisateurs. D'où l'absence d'instructions pour joindre le service dès cette introduction. Chaque utilisateur intéressé va pouvoir l'installer de son côté et en profiter personnellement, partageant le lien d'accès pour se connecter avec ses amis.
-
 ## Requirements
-
-Une machine serveur, une machine proxy, une machine "bastion". Le tout en Rocky Linux.
 
 Node est requis sur le serveur, utilisez les commandes suivantes :
 
@@ -24,8 +18,6 @@ Désactiver SELINUX
 sudo vim /etc/selinux/config
 # remplacer "enforcing" par "permissive" sur la ligne non commentée
 ```
-
-Faire le nfs avant ces étapes ?
 
 ## 1/ Installation de FoundryVTT
 
@@ -59,8 +51,6 @@ node resources/app/main.js --dataPath=$HOME/foundrydata
 ```
 
 On peut désormais se connecter à l'adresse du serveur au port 30000.
-
-!tester de transférer le fichier license.json!
 
 Il vous demande de rentrer une clé d'activation de license, aussi récupérable depuis votre page de profil.
 Et d'accepter l'EULA, tout cela est nécessaire pour utiliser Foundry.
@@ -129,10 +119,15 @@ Si on souhaite voir les logs de ses services en cas de problème :
 sudo journalctl -xe -u pm2-<USER>.service
 ```
 
-## 3/ Mise en place du proxy
+## 3/ Mise en place du nfs
+
+voir nfs.md
+
+## 4/ Mise en place du proxy
 
 voir proxy.md
 
-## 4/ Mise en place du ssl
+## 5/ Mise en place du ssl
 
 voir ssl.md
+

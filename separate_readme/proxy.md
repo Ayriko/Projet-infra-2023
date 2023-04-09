@@ -1,6 +1,6 @@
 # Mise en place du proxy
 
-Créer une vm avec la même carte réseau que le serveur
+Créer une vm dans le même réseau que le serveur avec pour ip 10.102.20.11
 
 ```bash
 sudo vim /etc/sysconfig/network-scripts/ifcfg-enp0s8

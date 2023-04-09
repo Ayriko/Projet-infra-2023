@@ -1,5 +1,10 @@
 # Mis en place du nfs
 
+## Prérequis
+
+Machine qui servira d'hôte au nfs sous rocky linux 9 avec pour ip 10.102.20.16.
+Pensez à désactiver SELINUX
+
 ## Machine hôte
 
 ```bash
@@ -14,7 +19,7 @@ sudo systemctl start nfs-server
 sudo systemctl status nfs-server                                                             
 ```
 
-sudo exportfs -a dès qu'on modifie le exports
+sudo exportfs -a sera utilisé dès qu'on modifiera le exports pour x raison.
 
 Note sur les options du exports:
 
@@ -27,8 +32,6 @@ Note sur les options du exports:
 #Add the anonuid=<uid> and anongid=<gid> options to specify the UID and GID of the anonymous user on the NFS server
 #65534 = nobody
 ```
-
-le sudo export a l'air très important dans la possibilité de mount ou non
 
 On edit le firewall
 
@@ -55,7 +58,7 @@ sudo vim foundry.config.js
 -> edit le DATA-PATH vers /home/aymerico/nfs/foundrydata
 ```
 
-Refaire le pm2 startup est nécessaire pour que ce soit pris en compte.
+Refaire le processus de pm2 startup est nécessaire pour que ce soit pris en compte.
 Voir dans readme.md
 
 ## Machine hôte - ajout d'un système de backup
@@ -89,7 +92,8 @@ tar -cf /home/rocky/backups/${backupfile}.tar.gz /exports/foundrydata/
 echo "Le dossier Foundrydata a été compressé en ${backupfile}.gz"
 ```
 
-On va ensuite mettre en place un service et un timer pour que le script soit éxécuté à une heure journalière donnée.
+Si vous souhaitez voice les étapes pour mettre en place un service et un timer pour que le script soit éxécuté à une heure journalière donnée.
+Vous pouvez également éxécutez le script à la main après chaque session de jeu.
 
 ```bash
 sudo vim /etc/systemd/system/data_backup.service
