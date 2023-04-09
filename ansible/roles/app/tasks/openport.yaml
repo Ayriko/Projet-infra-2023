@@ -1,7 +1,0 @@
-- name: Open port 30000
-  ansible.posix.firewalld:
-    zone: allowed
-    port: 30000/tcp
-    state: enabled
-    permanent: true
-  become: true

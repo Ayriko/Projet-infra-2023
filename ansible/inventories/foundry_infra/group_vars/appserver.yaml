@@ -1,9 +1,11 @@
-authorized_IP:
+authorized_IPs:
   - "{{ IP_ansible_host }}"
   - "{{ IP_reverse_proxy }}"
-  - "{{ IP_bastion }}"
 
-common_packages:
+authorized_ports:
+  - 30000/tcp
+
+packages_needed:
   - openssh-server
   - vi
   - nfs-utils

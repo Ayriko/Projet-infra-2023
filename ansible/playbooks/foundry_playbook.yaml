@@ -2,20 +2,20 @@
 - name: Config NFS_server
   hosts: nfsserver
   roles:
-    - common
+    - config_packages_firewall
     - nfs-server
 
 - name: Config App server
   hosts: appserver
   roles:
-    - common
+    - config_packages_firewall
     - nfs-client
     - app
 
 - name: Config Reverse_proxy
   hosts: reverseproxy
   roles:
-    - common
+    - config_packages_firewall
     - ssl_setup
     - nginx_rproxy
     - ngrok

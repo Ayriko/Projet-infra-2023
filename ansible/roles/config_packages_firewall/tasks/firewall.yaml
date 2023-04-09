@@ -16,7 +16,7 @@
     state: enabled
     permanent: true
   become: true
-  loop: "{{ authorized_IP }}"
+  loop: "{{ authorized_IPs }}"
   notify: Reload firewall
 
 - name: Set public zone to DROP
@@ -60,12 +60,23 @@
   when: public_ports.stdout | length > 0
   notify: Reload firewall
 
-- name: Add ssh service to the zone allowed
+- name: Add authorized services to the zone allowed
   ansible.posix.firewalld:
     zone: allowed
-    service: ssh
+    service: "{{ item }}"
     state: enabled
     permanent: true
+  with_items: "{{ authorized_services }}"
+  become: true
+  notify: Reload firewall
+
+- name: Add authorized ports to the zone allowed
+  ansible.posix.firewalld:
+    zone: allowed
+    port: "{{ item }}"
+    state: enabled
+    permanent: true
+  with_items: "{{ authorized_ports }}"
   become: true
   notify: Reload firewall
 

@@ -1,6 +1,0 @@
-authoried_IP:
-  - "{{ IP_ansible_host }}"
-
-common_packages:
-  - openssh-server
-  - vi

@@ -1,9 +1,0 @@
-- name: add services to allowed zone
-  ansible.posix.firewalld:
-    zone: allowed
-    service: "{{ item }}"
-    state: enabled
-    permanent: true
-  become: true
-  with_items: "{{ authorized_services }}"
-  notify: Reload firewall

@@ -3,12 +3,14 @@
 IP_app: 10.102.20.12
 app_listen_port: 30000
 
-authorized_IP:
+authorized_IPs:
   - "{{ IP_ansible_host }}"
   - "{{ IP_router }}"
-  - "{{ IP_bastion }}"
 
-common_packages:
+authorized_ports:
+  - 443/tcp
+
+packages_needed:
   - openssh-server
   - vi
   - nginx

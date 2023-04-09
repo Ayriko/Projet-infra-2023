@@ -1,15 +1,11 @@
-authorized_IPs:
+authoried_IPs:
   - "{{ IP_ansible_host }}"
-  - "{{ IP_app_server }}"
+
+authorized_ports: []
 
 authorized_services:
   - ssh
-  - nfs
-  - mountd
-  - rpc-bind
 
 packages_needed:
   - openssh-server
   - vi
-  - nfs-utils
-  - tar

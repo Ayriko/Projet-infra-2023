@@ -10,11 +10,3 @@
     state: started
     enabled: true
   become: true
-- name: open port 443
-  ansible.posix.firewalld:
-    zone: allowed
-    port: 443/tcp
-    state: enabled
-    permanent: true
-  become: true
-  notify: Reload firewall

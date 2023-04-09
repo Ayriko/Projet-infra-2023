@@ -1,8 +1,3 @@
-authorized_services:
-  - nfs
-  - mountd
-  - rpc-bind
-
 Path_to_scripts: /home/user/scripts/
 Path_to_backups: /home/user/backups/
 Scripts_path_need_root: false
