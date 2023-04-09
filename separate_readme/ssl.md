@@ -104,38 +104,7 @@ sudo systemctl start nginx
 node foundryvtt/resources/app/main.js --dataPath=$HOME/foundrydata
 ```
 
-ensuite on va transformer nginx en service
-Pour cela :
-
+pour faire en sorte que nginx se lance au démarrage du PC il suffit :
 ```bash
-sudo vim /etc/systemd/nginx.service
-
-[Unit]
-Description=The NGINX HTTP and reverse proxy server
-After=syslog.target network-online.target remote-fs.target nss-lookup.target
-Wants=network-online.target
-
-[Service]
-Type=forking
-PIDFile=/run/nginx.pid
-ExecStartPre=/usr/sbin/nginx -t
-ExecStart=/usr/sbin/nginx
-ExecReload=/usr/sbin/nginx -s reload
-ExecStop=/bin/kill -s QUIT $MAINPID
-PrivateTmp=true
-
-[Install]
-WantedBy=multi-user.target
-```
-
-puis on va le enable pour qu'il se lance au redémarrage :
-
-```bash
-sudo systemctl enable nginx.service
-```
-
-puis on le restart:
-
-```bash
-sudo systemctl restart nginx.service
+sudo systemctl enable nginx
 ```
