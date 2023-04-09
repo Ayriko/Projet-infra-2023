@@ -27,6 +27,7 @@ sudo vim /etc/selinux/config
     git clone https://github.com/Ayriko/Projet-infra-2023.git
     ```
    - ssh-copy-id vers les 3 autres machines (pour permettre une connexion ssh sans mot de passe)
+   - Déclarer une variable d'environnement "NGROK_AUTHTOKEN" contenant le token NGROK qui sera utilisé.
 
  - Reverse proxy nginx :
    - création d'un user "user" avec les droits sudo (si le nom du user choisi est différent, il faut en conséquence modifier le fichier [hosts.ini](ansible/inventories/foundry_infra/hosts.ini))
